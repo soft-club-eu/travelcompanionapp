@@ -1,4 +1,4 @@
-*{
+f*{
 	margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -180,9 +180,11 @@ width: 100%;
  }
 
 
- .third-box{    width: 62%;
-    height: 100%;
-float: left;}
+ .third-box{            width: 54%;
+    height: 35.5%;
+    float: left;
+    margin-top: 1%;
+    font-size: 12px;}
 
 
  .big-box{ width: 100%;
@@ -193,9 +195,11 @@ float: left;
 
 .butonq{     margin-top: 40%;}
 .in {    width: 31%;}
-.hundred{    width: 93%;
-    margin: 0 auto;
+.hundred{        width: 63%;
     height: 100%;
+    float: right;
+    margin-top: 6%;
+    font-size: 19px;
 }
 .first1{    width: 68%;
     height: 100%;
@@ -222,10 +226,26 @@ border: 1px solid green;
     width: 77%;
     margin: 0 auto;
     text-align: center;
-    border: 1px solid green;
-    height: 65%;
-    margin-top: 7%;
+    border: 2px solid green;
+    height: 33%;
+    margin-top: 2%;
 }
 .no-text{
         margin-top: 35%;
+}
+
+.first-box-button{
+width: 77%;
+    margin: 0 auto;
+    text-align: center;
+    border: 2px solid green;
+    margin-top: 14%;
+    border-radius: 24%;
+
+}
+
+.vtoroto{
+    height: 79%;
+    margin-top: 7%;
+    border: 2px solid green;
 }
