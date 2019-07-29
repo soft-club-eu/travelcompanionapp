@@ -1,5 +1,4 @@
-// array that contains objects with information
-let touristDestinations = [
+const touristDestinations = [
     {
         name: {
             bg: `Асеновата крепост`,
@@ -121,23 +120,62 @@ let touristDestinations = [
         picture: `images/Arapovo Monastery.jpg`
     }
 ];
-function setupDestinations(){
-    for (let i = 0; i < touristDestinations.length; i++){
-        let currentLat = touristDestinations[i].coords.lat;
-        let currentLng = touristDestinations[i].coords.lng;
-        let currentName = touristDestinations[i].name.bg;
-        let currentCategory = touristDestinations[i].category;
-        let currentInfo = touristDestinations[i].information.bg;
-        let currentPicture = touristDestinations[i].picture;
-        let currentLink = touristDestinations[i].wikipediaLink.bg;
-        let currentIcon = `images/${currentCategory}-icon.png`;
-        let greenIcon = new LeafIcon({iconUrl: currentIcon});
-        L.marker([currentLat, currentLng], {icon: greenIcon}).addTo(overlays[currentCategory]).on('click', function onClick(){
-            document.getElementById('title').innerHTML = currentName;
-            document.getElementById('information').innerHTML = currentInfo;
-            document.getElementById('destination-image').setAttribute('src', currentPicture);
-            document.getElementById('link-to-wikipedia').setAttribute('href', currentLink);
-        });
+
+const displayCategory = {
+    fortress: true,
+    monastery: true,
+    museum: true
+};
+
+const customIcons = {
+    fortress: 'images/fortress-icon.png',
+    monastery: 'images/monastery-icon.png',
+    museum: 'images/museum-icon.png'
+};
+
+function setupDestinations() {
+
+    //filter out all the destinations that should not be displayed
+    const destinationsToDisplay = touristDestinations.filter(destination => displayCategory[destination.category]);
+
+    //delete each layer of tourist destination on the map, because otherwise, after adding them, they will be duplicated
+
+    mymap.eachLayer(layer => {
+       if (layer._icon) {
+        if(Object.values(customIcons).indexOf(layer._icon.getAttribute('src')) !== -1) mymap.removeLayer(layer);
     }
+       
+    })
+    for (let destination of destinationsToDisplay) {
+        const destinationObj = {
+            lat: destination.coords.lat,
+            lng: destination.coords.lng,
+            name: destination.name.bg,
+            category: destination.category,
+            info: destination.information.bg,
+            picture: destination.picture,
+            link: destination.wikipediaLink.bg,
+            icon: new LeafIcon({iconUrl: customIcons[destination.category]})
+        };
+
+        mymap.addLayer(overlays[destinationObj.category]);
+        L.marker([destinationObj.lat, destinationObj.lng], {icon: destinationObj.icon}).addTo(overlays[destinationObj.category]).addEventListener('click', () => showInfoInDownBar(destinationObj));
+        
+    }
+    
 }
+
+function showInfoInDownBar(obj) {
+    const title = document.getElementById('title');
+    const informationBox = document.getElementById('information');
+    const image = document.getElementById('destination-image');
+    const link = document.getElementById('link-to-wikipedia');
+
+    title.innerHTML = obj.name;
+    informationBox.innerHTML = obj.info;
+    image.setAttribute('src', obj.picture); 
+    link.setAttribute('href', obj.link);
+}
+
 setupDestinations();
+
